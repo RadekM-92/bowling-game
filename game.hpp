@@ -1,4 +1,6 @@
 #pragma once
+#include <cstddef>
+#include <vector>
 
 #define PinsMax 10
 #define FramesMax 10
@@ -16,7 +18,8 @@ private:
     int frameCounter_ = 0;
     int totalScore_ = 0;
     int extraPoints_ = 0;
-    int pinsKOMem_[FramesMax + FramesExtraMax][RollsMaxInFrame] = { 0 };
+    const size_t rollsMax_ = 21U;
+    std::vector<int> knockedDownPins_;
 
     bool isStrike(int);
     bool isSpare(int);
@@ -26,7 +29,7 @@ private:
     int pointsSum();
 
 public:
-    void roll(int PinsKnockedDown);
+    void setKnockedDownPins(int);
     int score();
     game();
     ~game();
