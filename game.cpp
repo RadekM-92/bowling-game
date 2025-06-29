@@ -33,6 +33,7 @@ bool game::isSpare(int FrameNo)
 void game::frameIncrease()
 {
     frameCounter_ = frameCounter_ + 1;
+    rollCounter_ = 0;
 }
 
 void game::rollIncrease()
@@ -44,23 +45,23 @@ bool game::isGameEnd()
 {
     bool GameEnd = false;
 
-    if (FrameLast <= frameCounter_) {
-        if (isSpare(FrameLast)) {
-            if (FrameLast < frameCounter_ && FirstRoll < rollCounter_) {
-                GameEnd = true;
-            }
-        } else if (isStrike(FrameLast)) {
-            if (isStrike(BonusFrame)) {
-                if (BonusFrame < frameCounter_ && FirstRoll < rollCounter_) {
-                    GameEnd = true;
-                }
-            } else if (FrameLast < frameCounter_ && SecondRoll < rollCounter_) {
-                GameEnd = true;
-            }
-        } else if (RollsMaxInFrame <= rollCounter_) {
-            GameEnd = true;
-        }
-    }
+    // if (FrameLast <= frameCounter_) {
+    //     if (isSpare(FrameLast)) {
+    //         if (FrameLast < frameCounter_ && FirstRoll < rollCounter_) {
+    //             GameEnd = true;
+    //         }
+    //     } else if (isStrike(FrameLast)) {
+    //         if (isStrike(BonusFrame)) {
+    //             if (BonusFrame < frameCounter_ && FirstRoll < rollCounter_) {
+    //                 GameEnd = true;
+    //             }
+    //         } else if (FrameLast < frameCounter_ && SecondRoll < rollCounter_) {
+    //             GameEnd = true;
+    //         }
+    //     } else if (RollsMaxInFrame <= rollCounter_) {
+    //         GameEnd = true;
+    //     }
+    // }
 
     return GameEnd;
 }
@@ -138,11 +139,21 @@ void game::roll(int knockedDownPinsAmount){
     }
     else
     {
-        knockedDownPins_.push_back(knockedDownPinsAmount);
+        rollIncrease();
+        if(1==rollCounter_){
+            knockedDownPinsPerFrame_.first = knockedDownPinsAmount;
+            knockedDownPinsPerFrame_.second = 0;
+            knockedDownPins_[frameCounter_]=knockedDownPinsPerFrame_;
+        }
+        else if(2==rollCounter_){
+            knockedDownPinsPerFrame_.second = knockedDownPinsAmount;
+            knockedDownPins_[frameCounter_]=knockedDownPinsPerFrame_;
+        }
         pinsLeft_ = pinsLeft_ - knockedDownPinsAmount;
     }
 
-    rollIncrease();
+    std::cout<<"{"<<knockedDownPinsPerFrame_.first<<", "<< knockedDownPinsPerFrame_.second<<"}\n";
+    
     if(0==pinsLeft_
         || rollsInFrameMax_ <= rollCounter_){
         pinsLeft_=PinsMax;
@@ -153,14 +164,14 @@ void game::roll(int knockedDownPinsAmount){
 int game::getScore() const
 {
     auto score = 0;
-    for(const auto & points : knockedDownPins_){
-        score = score + points;
+    for( const auto & [firstRoll, secondRoll] : knockedDownPins_){
+        score = score + firstRoll + secondRoll;
     }
 
     return score;
 }
 
 game::game()
-        : knockedDownPins_(rollsMax_, 0)
+        : knockedDownPins_(framesMax, {0,0})
         {};
 game::~game() = default;
