@@ -18,16 +18,16 @@ private:
     int extraPoints_ = 0;
     int pinsKOMem_[FramesMax + FramesExtraMax][RollsMaxInFrame] = { 0 };
 
-    bool IsStrike(int FrameNo);
-    bool IsSpare(int FrameNo);
-    void FrameIncrease(void);
-    void RollIncrease(void);
-    bool IsGameEnd(void);
-    int PointsSum(void);
+    bool isStrike(int);
+    bool isSpare(int);
+    void frameIncrease();
+    void rollIncrease();
+    bool isGameEnd();
+    int pointsSum();
 
 public:
     void roll(int PinsKnockedDown);
-    int score(void);
+    int score();
     game();
     ~game();
 };
