@@ -15,7 +15,7 @@ int main(void)
         cout << "\r\n";
         cout << "Input PinsKO = ";
         cin >> PinsKO;
-        player1.setKnockedDownPins(PinsKO);
+        player1.roll(PinsKO);
         cout << "Score: " << player1.score() << "\r\n";
     }
 

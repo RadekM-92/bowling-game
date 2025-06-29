@@ -129,13 +129,19 @@ int game::pointsSum()
 //     }
 // }
 
-void game::setKnockedDownPins(int KnockedDownPinsAmount){
-    if(PinsMax < KnockedDownPinsAmount){
+void game::roll(int knockedDownPinsAmount){
+    if(PinsMax < knockedDownPinsAmount
+        || pinsLeft_ < knockedDownPinsAmount){
         std::cout<<"Pins knocked down out of range!"<<std::endl;
     }
     else
     {
-        knockedDownPins_.push_back(KnockedDownPinsAmount);
+        knockedDownPins_.push_back(knockedDownPinsAmount);
+        pinsLeft_ = pinsLeft_ - knockedDownPinsAmount;
+    }
+
+    if(0U==pinsLeft_){
+        pinsLeft_=10U;
     }
 }
 

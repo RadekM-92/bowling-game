@@ -20,6 +20,7 @@ private:
     int extraPoints_ = 0;
     const size_t rollsMax_ = 21U;
     std::vector<int> knockedDownPins_;
+    int pinsLeft_=10U;
 
     bool isStrike(int);
     bool isSpare(int);
@@ -29,7 +30,7 @@ private:
     int pointsSum();
 
 public:
-    void setKnockedDownPins(int);
+    void roll(int);
     int score();
     game();
     ~game();
