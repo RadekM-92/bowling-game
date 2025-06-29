@@ -106,7 +106,9 @@ int game::pointsSum()
 // {
 //     pinsKOMem_[frameCounter_][rollCounter_] = PinsKnockedDown;
 
-//     if (pinsKOMem_[frameCounter_][FirstRoll] > PinsMax || pinsKOMem_[frameCounter_][SecondRoll] > PinsMax || pinsKOMem_[frameCounter_][FirstRoll] + pinsKOMem_[frameCounter_][SecondRoll] > PinsMax) {
+//     if (pinsKOMem_[frameCounter_][FirstRoll] > PinsMax 
+// || pinsKOMem_[frameCounter_][SecondRoll] > PinsMax 
+// || pinsKOMem_[frameCounter_][FirstRoll] + pinsKOMem_[frameCounter_][SecondRoll] > PinsMax) {
 //         cout << "Pins knocked down out of range!"
 //              << "\r\n";
 //     } else {
@@ -140,8 +142,11 @@ void game::roll(int knockedDownPinsAmount){
         pinsLeft_ = pinsLeft_ - knockedDownPinsAmount;
     }
 
-    if(0U==pinsLeft_){
-        pinsLeft_=10U;
+    rollIncrease();
+    if(0==pinsLeft_
+        || rollsInFrameMax_ <= rollCounter_){
+        pinsLeft_=PinsMax;
+        frameIncrease();
     }
 }
 

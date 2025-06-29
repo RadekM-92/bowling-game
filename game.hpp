@@ -19,6 +19,7 @@ private:
     int totalScore_ = 0;
     int extraPoints_ = 0;
     const size_t rollsMax_ = 21U;
+    const size_t rollsInFrameMax_ = 2U;
     std::vector<int> knockedDownPins_;
     int pinsLeft_=10U;
 
