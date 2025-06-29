@@ -9,7 +9,7 @@ bool game::IsStrike(int FrameNo)
     bool result;
 
     if (0 <= FrameNo && FramesMax + FramesExtraMax > FrameNo) {
-        result = (PinsMax == PinsKO_Mem[FrameNo][0]) ? true : false;
+        result = (PinsMax == pinsKOMem_[FrameNo][0]) ? true : false;
     } else {
         result = false;
     }
@@ -22,7 +22,7 @@ bool game::IsSpare(int FrameNo)
     bool result;
 
     if (0 <= FrameNo && FramesMax + FramesExtraMax > FrameNo) {
-        result = (PinsMax > PinsKO_Mem[FrameNo][0] && PinsMax > PinsKO_Mem[FrameNo][1] && PinsMax == PinsKO_Mem[FrameNo][0] + PinsKO_Mem[FrameNo][1]) ? true : false;
+        result = (PinsMax > pinsKOMem_[FrameNo][0] && PinsMax > pinsKOMem_[FrameNo][1] && PinsMax == pinsKOMem_[FrameNo][0] + pinsKOMem_[FrameNo][1]) ? true : false;
     } else {
         result = false;
     }
@@ -32,32 +32,32 @@ bool game::IsSpare(int FrameNo)
 
 void game::FrameIncrease(void)
 {
-    Frame_PV = Frame_PV + 1;
+    frameCounter_ = frameCounter_ + 1;
 }
 
 void game::RollIncrease(void)
 {
-    Roll_PV = Roll_PV + 1;
+    rollCounter_ = rollCounter_ + 1;
 }
 
 bool game::IsGameEnd(void)
 {
     bool GameEnd = false;
 
-    if (FrameLast <= Frame_PV) {
+    if (FrameLast <= frameCounter_) {
         if (IsSpare(FrameLast)) {
-            if (FrameLast < Frame_PV && FirstRoll < Roll_PV) {
+            if (FrameLast < frameCounter_ && FirstRoll < rollCounter_) {
                 GameEnd = true;
             }
         } else if (IsStrike(FrameLast)) {
             if (IsStrike(BonusFrame)) {
-                if (BonusFrame < Frame_PV && FirstRoll < Roll_PV) {
+                if (BonusFrame < frameCounter_ && FirstRoll < rollCounter_) {
                     GameEnd = true;
                 }
-            } else if (FrameLast < Frame_PV && SecondRoll < Roll_PV) {
+            } else if (FrameLast < frameCounter_ && SecondRoll < rollCounter_) {
                 GameEnd = true;
             }
-        } else if (RollsMaxInFrame <= Roll_PV) {
+        } else if (RollsMaxInFrame <= rollCounter_) {
             GameEnd = true;
         }
     }
@@ -68,34 +68,34 @@ bool game::IsGameEnd(void)
 int game::PointsSum(void)
 {
     int frame;
-    int ExtraPoints = 0;
+    int extraPoints_ = 0;
     int Sum = 0;
 
     for (frame = 0; FramesMax + FramesExtraMax > frame; frame++) {
-        ExtraPoints = 0;
+        extraPoints_ = 0;
 
         if (IsStrike(frame) && FrameLast > frame) {
             if (IsStrike(frame + 1)) {
-                if (frame + 1 < Frame_PV) {
-                    ExtraPoints = PinsKO_Mem[frame + 1][FirstRoll] + PinsKO_Mem[frame + 2][FirstRoll];
+                if (frame + 1 < frameCounter_) {
+                    extraPoints_ = pinsKOMem_[frame + 1][FirstRoll] + pinsKOMem_[frame + 2][FirstRoll];
                 }
             } else {
-                if (SecondRoll < Roll_PV) {
-                    ExtraPoints = PinsKO_Mem[frame + 1][FirstRoll] + PinsKO_Mem[frame + 1][SecondRoll];
+                if (SecondRoll < rollCounter_) {
+                    extraPoints_ = pinsKOMem_[frame + 1][FirstRoll] + pinsKOMem_[frame + 1][SecondRoll];
                 }
             }
         } else if (IsSpare(frame)) {
-            if (frame < Frame_PV) {
-                ExtraPoints = PinsKO_Mem[frame + 1][FirstRoll];
+            if (frame < frameCounter_) {
+                extraPoints_ = pinsKOMem_[frame + 1][FirstRoll];
             }
         }
 
-        Sum = Sum + PinsKO_Mem[frame][0] + PinsKO_Mem[frame][1] + ExtraPoints;
+        Sum = Sum + pinsKOMem_[frame][0] + pinsKOMem_[frame][1] + extraPoints_;
 
-        // cout << frame << ": " << PinsKO_Mem[frame][0] << " " << PinsKO_Mem[frame][1] << \
+        // cout << frame << ": " << pinsKOMem_[frame][0] << " " << pinsKOMem_[frame][1] << \
                 // " " <<  "Strike=" << IsStrike(frame) << " " << "Spare=" << IsSpare(frame) <<   "\r\n";
 
-        if (frame > Frame_PV - 1) {
+        if (frame > frameCounter_ - 1) {
             break;
         }
     }
@@ -104,26 +104,26 @@ int game::PointsSum(void)
 
 void game::roll(int PinsKnockedDown)
 {
-    PinsKO_Mem[Frame_PV][Roll_PV] = PinsKnockedDown;
+    pinsKOMem_[frameCounter_][rollCounter_] = PinsKnockedDown;
 
-    if (PinsKO_Mem[Frame_PV][FirstRoll] > PinsMax || PinsKO_Mem[Frame_PV][SecondRoll] > PinsMax || PinsKO_Mem[Frame_PV][FirstRoll] + PinsKO_Mem[Frame_PV][SecondRoll] > PinsMax) {
+    if (pinsKOMem_[frameCounter_][FirstRoll] > PinsMax || pinsKOMem_[frameCounter_][SecondRoll] > PinsMax || pinsKOMem_[frameCounter_][FirstRoll] + pinsKOMem_[frameCounter_][SecondRoll] > PinsMax) {
         cout << "Pins knocked down out of range!"
              << "\r\n";
     } else {
 
         RollIncrease();
-        TotalScore = PointsSum();
+        totalScore_ = PointsSum();
 
-        // cout << "F:"<<Frame_PV<<" R:"<<Roll_PV<<"\r\n";
-        // cout << "Total: " << "Points= " << TotalScore << "\r\n";
+        // cout << "F:"<<frameCounter_<<" R:"<<rollCounter_<<"\r\n";
+        // cout << "Total: " << "Points= " << totalScore_ << "\r\n";
 
         if (IsGameEnd()) {
             cout << "End Game\r\n";
             exit(2);
         }
 
-        if (RollsMaxInFrame <= Roll_PV || IsStrike(Frame_PV)) {
-            Roll_PV = 0;
+        if (RollsMaxInFrame <= rollCounter_ || IsStrike(frameCounter_)) {
+            rollCounter_ = 0;
             FrameIncrease();
         }
     }
@@ -131,7 +131,7 @@ void game::roll(int PinsKnockedDown)
 
 int game::score(void)
 {
-    return TotalScore;
+    return totalScore_;
 }
 
 game::game() = default;

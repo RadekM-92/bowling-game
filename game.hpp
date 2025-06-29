@@ -12,11 +12,11 @@
 
 class game {
 private:
-    int Roll_PV = 0;
-    int Frame_PV = 0;
-    int TotalScore = 0;
-    int ExtraPoints = 0;
-    int PinsKO_Mem[FramesMax + FramesExtraMax][RollsMaxInFrame] = { 0 };
+    int rollCounter_ = 0;
+    int frameCounter_ = 0;
+    int totalScore_ = 0;
+    int extraPoints_ = 0;
+    int pinsKOMem_[FramesMax + FramesExtraMax][RollsMaxInFrame] = { 0 };
 
     bool IsStrike(int FrameNo);
     bool IsSpare(int FrameNo);
