@@ -32,7 +32,7 @@ private:
 
 public:
     void roll(int);
-    int score();
+    int getScore() const;
     game();
     ~game();
 };

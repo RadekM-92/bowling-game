@@ -150,12 +150,17 @@ void game::roll(int knockedDownPinsAmount){
     }
 }
 
-int game::score()
+int game::getScore() const
 {
-    return totalScore_;
+    auto score = 0;
+    for(const auto & points : knockedDownPins_){
+        score = score + points;
+    }
+
+    return score;
 }
 
 game::game()
-        : knockedDownPins_(rollsMax_)
+        : knockedDownPins_(rollsMax_, 0)
         {};
 game::~game() = default;
