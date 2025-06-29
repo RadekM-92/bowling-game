@@ -4,30 +4,24 @@
 
 using namespace std;
 
-bool game::isStrike(int FrameNo)
+bool game::isStrike(const std::pair<int, int>& frame)
 {
-    bool result=false;
-
-    // if (0 <= FrameNo && FramesMax + FramesExtraMax > FrameNo) {
-    //     result = (PinsMax == pinsKOMem_[FrameNo][0]) ? true : false;
-    // } else {
-    //     result = false;
-    // }
-
-    return result;
+    if(PinsMax==frame.first){
+        return true;
+    }
+    else{
+        return false;
+    }
 };
 
-bool game::isSpare(int FrameNo)
+bool game::isSpare(const std::pair<int, int>& frame)
 {
-    bool result=false;
-
-    // if (0 <= FrameNo && FramesMax + FramesExtraMax > FrameNo) {
-    //     result = (PinsMax > pinsKOMem_[FrameNo][0] && PinsMax > pinsKOMem_[FrameNo][1] && PinsMax == pinsKOMem_[FrameNo][0] + pinsKOMem_[FrameNo][1]) ? true : false;
-    // } else {
-    //     result = false;
-    // }
-
-    return result;
+    if(PinsMax==(frame.first+frame.second)){
+        return true;
+    }
+    else{
+        return false;
+    }
 };
 
 void game::frameIncrease()
@@ -153,6 +147,8 @@ void game::roll(int knockedDownPinsAmount){
     }
 
     std::cout<<"{"<<knockedDownPinsPerFrame_.first<<", "<< knockedDownPinsPerFrame_.second<<"}\n";
+    isStrike(knockedDownPinsPerFrame_);
+    isSpare(knockedDownPinsPerFrame_);
     
     if(0==pinsLeft_
         || rollsInFrameMax_ <= rollCounter_){

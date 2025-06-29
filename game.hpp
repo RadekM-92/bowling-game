@@ -22,8 +22,8 @@ private:
     std::pair<int, int> knockedDownPinsPerFrame_{0,0};
     int pinsLeft_=10U;
 
-    bool isStrike(int);
-    bool isSpare(int);
+    bool isStrike(const std::pair<int, int>&);
+    bool isSpare(const std::pair<int, int>&);
     void frameIncrease();
     void rollIncrease();
     bool isGameEnd();
