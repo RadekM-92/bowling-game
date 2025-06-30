@@ -104,8 +104,6 @@ void game::roll(int knockedDownPinsAmount)
             pinsLeft_ = pinsLeft_ - knockedDownPinsAmount;
         }
         std::cout << "{" << knockedDownPinsPerFrame_.first << ", " << knockedDownPinsPerFrame_.second << "}\n";
-        isStrike(knockedDownPinsPerFrame_);
-        isSpare(knockedDownPinsPerFrame_);
         totalScore_ = pointsSum();
     }
 
