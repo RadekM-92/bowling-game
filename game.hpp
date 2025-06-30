@@ -2,14 +2,6 @@
 #include <cstddef>
 #include <vector>
 
-#define PinsMax 10
-#define FramesMax 10
-#define FramesExtraMax 2
-#define RollsMaxInFrame 2
-#define RollsExtraMax 2
-#define FrameLast FramesMax - 1
-#define BonusFrame 10
-
 class game {
 private:
     int rollCounter_ = 0;
@@ -17,6 +9,7 @@ private:
     int totalScore_ = 0;
     int extraPoints_ = 0;
     bool gameEnd_ = false;
+    const size_t pinsMaxInFrame = 10U;
     const size_t framesMaxWithoutBonus_ = 10U;
     const size_t framesMaxWithBonus_ = 12U;
     const size_t rollsInFrameMax_ = 2U;

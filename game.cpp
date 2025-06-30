@@ -6,7 +6,7 @@ using namespace std;
 
 bool game::isStrike(const std::pair<int, int>& frame)
 {
-    if (PinsMax == frame.first) {
+    if (pinsMaxInFrame == frame.first) {
         return true;
     } else {
         return false;
@@ -15,7 +15,7 @@ bool game::isStrike(const std::pair<int, int>& frame)
 
 bool game::isSpare(const std::pair<int, int>& frame)
 {
-    if (PinsMax == (frame.first + frame.second)) {
+    if (pinsMaxInFrame == (frame.first + frame.second)) {
         return true;
     } else {
         return false;
@@ -61,24 +61,22 @@ bool game::isGameEnd()
 int game::pointsSum()
 {
     auto score = 0U;
-    auto frame=1U;
-    for(auto it=knockedDownPins_.begin(); it != knockedDownPins_.end(); it++, frame++){
-        const auto & [firstRoll, secondRoll] = *it;
+    auto frame = 1U;
+    for (auto it = knockedDownPins_.begin(); it != knockedDownPins_.end(); it++, frame++) {
+        const auto& [firstRoll, secondRoll] = *it;
 
         score = score + firstRoll + secondRoll;
-        
-        if(framesMaxWithoutBonus_>frame){
-            if(isStrike(*it)){
-                if(isStrike(*(it+1))){
-                    score = score + (it+1)->first + (it+2)->first;
+
+        if (framesMaxWithoutBonus_ > frame) {
+            if (isStrike(*it)) {
+                if (isStrike(*(it + 1))) {
+                    score = score + (it + 1)->first + (it + 2)->first;
+                } else {
+                    score = score + (it + 1)->first + (it + 1)->second;
                 }
-                else{
-                    score = score + (it+1)->first + (it+1)->second;
-                }
-            }
-            else{
-                if(isSpare(*it)){
-                    score = score + (it+1)->first;
+            } else {
+                if (isSpare(*it)) {
+                    score = score + (it + 1)->first;
                 }
             }
         }
@@ -90,7 +88,7 @@ int game::pointsSum()
 void game::roll(int knockedDownPinsAmount)
 {
     if (!gameEnd_) {
-        if (PinsMax < knockedDownPinsAmount
+        if (pinsMaxInFrame < knockedDownPinsAmount
             || pinsLeft_ < knockedDownPinsAmount) {
             std::cout << "Pins knocked down out of range!" << std::endl;
         } else {
@@ -118,7 +116,7 @@ void game::roll(int knockedDownPinsAmount)
 
     if (0 == pinsLeft_
         || rollsInFrameMax_ <= rollCounter_) {
-        pinsLeft_ = PinsMax;
+        pinsLeft_ = pinsMaxInFrame;
         frameIncrease();
     }
 }
@@ -128,7 +126,8 @@ int game::getScore() const
     return totalScore_;
 }
 
-bool game::getGameEnd() const{
+bool game::getGameEnd() const
+{
     return gameEnd_;
 }
 
