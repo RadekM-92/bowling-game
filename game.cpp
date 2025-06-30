@@ -69,7 +69,7 @@ int game::pointsSum()
 
 void game::roll(int knockedDownPinsAmount)
 {
-    if (!gameEnd) {
+    if (!gameEnd_) {
         if (PinsMax < knockedDownPinsAmount
             || pinsLeft_ < knockedDownPinsAmount) {
             std::cout << "Pins knocked down out of range!" << std::endl;
@@ -91,7 +91,7 @@ void game::roll(int knockedDownPinsAmount)
     }
 
     if (isGameEnd()) {
-        gameEnd = true;
+        gameEnd_ = true;
         std::cout << "End game" << std::endl;
     }
 
@@ -110,6 +110,10 @@ int game::getScore() const
     }
 
     return score;
+}
+
+bool game::getGameEnd() const{
+    return gameEnd_;
 }
 
 game::game()

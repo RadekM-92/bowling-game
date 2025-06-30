@@ -8,10 +8,9 @@ int main(void)
 {
     game player1;
     int PinsKO = 0;
-    int cnt = 20;
 
     cout << "Bowling Game Start\r\n";
-    while (cnt) {
+    while (!player1.getGameEnd()) {
         cout << "\r\n";
         cout << "Input PinsKO = ";
         cin >> PinsKO;

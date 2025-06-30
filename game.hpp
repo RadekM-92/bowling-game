@@ -16,7 +16,7 @@ private:
     int frameCounter_ = 0;
     int totalScore_ = 0;
     int extraPoints_ = 0;
-    bool gameEnd = false;
+    bool gameEnd_ = false;
     const size_t framesMaxWithoutBonus_ = 10U;
     const size_t framesMaxWithBonus_ = 12U;
     const size_t rollsInFrameMax_ = 2U;
@@ -34,6 +34,7 @@ private:
 public:
     void roll(int);
     int getScore() const;
+    bool getGameEnd() const;
     game();
     ~game();
 };
