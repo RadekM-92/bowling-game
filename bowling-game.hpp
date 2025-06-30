@@ -7,7 +7,6 @@ private:
     int rollCounter_ = 0;
     int frameCounter_ = 0;
     int totalScore_ = 0;
-    int extraPoints_ = 0;
     bool gameEnd_ = false;
     const size_t pinsMaxInFrame = 10U;
     const size_t framesMaxWithoutBonus_ = 10U;
