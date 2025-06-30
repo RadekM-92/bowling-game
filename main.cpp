@@ -1,21 +1,21 @@
-#include "game.hpp"
+#include "bowling-game.hpp"
 #include <cstdlib>
 #include <iostream>
 
-using namespace std;
+
 
 int main(void)
 {
-    game player1;
+    BowlingGame MyBowlingGame;
     int PinsKO = 0;
 
-    cout << "Bowling Game Start\r\n";
-    while (!player1.getGameEnd()) {
-        cout << "\r\n";
-        cout << "Input PinsKO = ";
-        cin >> PinsKO;
-        player1.roll(PinsKO);
-        cout << "Score: " << player1.getScore() << "\r\n";
+    std::cout << "Bowling Game Start\r\n";
+    while (!MyBowlingGame.getGameEnd()) {
+        std::cout << "\r\n";
+        std::cout << "Input PinsKO = ";
+        std::cin >> PinsKO;
+        MyBowlingGame.roll(PinsKO);
+        std::cout << "Score: " << MyBowlingGame.getScore() << "\r\n";
     }
 
     return 0;
