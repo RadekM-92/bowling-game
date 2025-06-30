@@ -4,7 +4,7 @@
 
 
 
-bool BowlingGame::isStrike(const std::pair<int, int>& frame)
+bool BowlingGame::isStrike(const std::pair<size_t, size_t>& frame)
 {
     if (pinsMaxInFrame == frame.first) {
         return true;
@@ -13,7 +13,7 @@ bool BowlingGame::isStrike(const std::pair<int, int>& frame)
     }
 };
 
-bool BowlingGame::isSpare(const std::pair<int, int>& frame)
+bool BowlingGame::isSpare(const std::pair<size_t, size_t>& frame)
 {
     if (pinsMaxInFrame == (frame.first + frame.second)) {
         return true;
@@ -24,13 +24,13 @@ bool BowlingGame::isSpare(const std::pair<int, int>& frame)
 
 void BowlingGame::frameIncrease()
 {
-    frameCounter_ = frameCounter_ + 1;
-    rollCounter_ = 0;
+    frameCounter_ = frameCounter_ + 1U;
+    rollCounter_ = 0U;
 }
 
 void BowlingGame::rollIncrease()
 {
-    rollCounter_ = rollCounter_ + 1;
+    rollCounter_ = rollCounter_ + 1U;
 }
 
 bool BowlingGame::isGameEnd()
@@ -85,7 +85,7 @@ int BowlingGame::pointsSum()
     return score;
 }
 
-void BowlingGame::roll(int knockedDownPinsAmount)
+void BowlingGame::roll(size_t knockedDownPinsAmount)
 {
     if (!gameEnd_) {
         if (pinsMaxInFrame < knockedDownPinsAmount
@@ -93,11 +93,11 @@ void BowlingGame::roll(int knockedDownPinsAmount)
             std::cout << "Pins knocked down out of range!" << std::endl;
         } else {
             rollIncrease();
-            if (1 == rollCounter_) {
+            if (1U == rollCounter_) {
                 knockedDownPinsPerFrame_.first = knockedDownPinsAmount;
-                knockedDownPinsPerFrame_.second = 0;
+                knockedDownPinsPerFrame_.second = 0U;
                 knockedDownPins_[frameCounter_] = knockedDownPinsPerFrame_;
-            } else if (2 == rollCounter_) {
+            } else if (2U == rollCounter_) {
                 knockedDownPinsPerFrame_.second = knockedDownPinsAmount;
                 knockedDownPins_[frameCounter_] = knockedDownPinsPerFrame_;
             }
@@ -112,7 +112,7 @@ void BowlingGame::roll(int knockedDownPinsAmount)
         std::cout << "End BowlingGame" << std::endl;
     }
 
-    if (0 == pinsLeft_
+    if (0U == pinsLeft_
         || rollsInFrameMax_ <= rollCounter_) {
         pinsLeft_ = pinsMaxInFrame;
         frameIncrease();
@@ -130,5 +130,5 @@ bool BowlingGame::getGameEnd() const
 }
 
 BowlingGame::BowlingGame()
-    : knockedDownPins_(framesMaxWithBonus_, { 0, 0 }) {};
+    : knockedDownPins_(framesMaxWithBonus_, { 0U, 0U }) {};
 BowlingGame::~BowlingGame() = default;
