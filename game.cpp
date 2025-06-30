@@ -60,11 +60,31 @@ bool game::isGameEnd()
 
 int game::pointsSum()
 {
-    int frame;
-    int extraPoints_ = 0;
-    int Sum = 0;
+    auto score = 0U;
+    auto frame=1U;
+    for(auto it=knockedDownPins_.begin(); it != knockedDownPins_.end(); it++, frame++){
+        const auto & [firstRoll, secondRoll] = *it;
 
-    return Sum;
+        score = score + firstRoll + secondRoll;
+        
+        if(framesMaxWithoutBonus_>frame){
+            if(isStrike(*it)){
+                if(isStrike(*(it+1))){
+                    score = score + (it+1)->first + (it+2)->first;
+                }
+                else{
+                    score = score + (it+1)->first + (it+1)->second;
+                }
+            }
+            else{
+                if(isSpare(*it)){
+                    score = score + (it+1)->first;
+                }
+            }
+        }
+    }
+
+    return score;
 }
 
 void game::roll(int knockedDownPinsAmount)
@@ -88,6 +108,7 @@ void game::roll(int knockedDownPinsAmount)
         std::cout << "{" << knockedDownPinsPerFrame_.first << ", " << knockedDownPinsPerFrame_.second << "}\n";
         isStrike(knockedDownPinsPerFrame_);
         isSpare(knockedDownPinsPerFrame_);
+        totalScore_ = pointsSum();
     }
 
     if (isGameEnd()) {
@@ -104,12 +125,7 @@ void game::roll(int knockedDownPinsAmount)
 
 int game::getScore() const
 {
-    auto score = 0;
-    for (const auto& [firstRoll, secondRoll] : knockedDownPins_) {
-        score = score + firstRoll + secondRoll;
-    }
-
-    return score;
+    return totalScore_;
 }
 
 bool game::getGameEnd() const{
