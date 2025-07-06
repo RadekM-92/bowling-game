@@ -2,7 +2,10 @@
 #include <cstdlib>
 #include <iostream>
 
-
+PinsKoRangeError::PinsKoRangeError(std::string const& msg)
+    : std::range_error(msg)
+{
+}
 
 bool BowlingGame::isStrike(const std::pair<size_t, size_t>& frame)
 {
@@ -88,9 +91,8 @@ int BowlingGame::pointsSum()
 void BowlingGame::roll(size_t knockedDownPinsAmount)
 {
     if (!gameEnd_) {
-        if (pinsMaxInFrame < knockedDownPinsAmount
-            || pinsLeft_ < knockedDownPinsAmount) {
-            std::cout << "Pins knocked down out of range!" << std::endl;
+        if (pinsMaxInFrame < knockedDownPinsAmount || pinsLeft_ < knockedDownPinsAmount) {
+            throw PinsKoRangeError { "Pins knocked down out of range!" };
         } else {
             rollIncrease();
             if (1U == rollCounter_) {
@@ -112,8 +114,7 @@ void BowlingGame::roll(size_t knockedDownPinsAmount)
         std::cout << "End BowlingGame" << std::endl;
     }
 
-    if (0U == pinsLeft_
-        || rollsInFrameMax_ <= rollCounter_) {
+    if (0U == pinsLeft_ || rollsInFrameMax_ <= rollCounter_) {
         pinsLeft_ = pinsMaxInFrame;
         frameIncrease();
     }

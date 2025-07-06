@@ -1,6 +1,11 @@
 #pragma once
 #include <cstddef>
+#include <stdexcept>
 #include <vector>
+
+struct PinsKoRangeError : public std::range_error {
+    PinsKoRangeError(std::string const&);
+};
 
 class BowlingGame {
 private:
