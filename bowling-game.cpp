@@ -9,7 +9,7 @@ PinsKoRangeError::PinsKoRangeError(std::string const& msg)
 
 bool BowlingGame::isStrike(const std::pair<size_t, size_t>& frame)
 {
-    if (pinsMaxInFrame == frame.first) {
+    if (Parameters_->pinsMaxInFrame == frame.first) {
         return true;
     } else {
         return false;
@@ -18,7 +18,7 @@ bool BowlingGame::isStrike(const std::pair<size_t, size_t>& frame)
 
 bool BowlingGame::isSpare(const std::pair<size_t, size_t>& frame)
 {
-    if (pinsMaxInFrame == (frame.first + frame.second)) {
+    if (Parameters_->pinsMaxInFrame == (frame.first + frame.second)) {
         return true;
     } else {
         return false;
@@ -27,31 +27,31 @@ bool BowlingGame::isSpare(const std::pair<size_t, size_t>& frame)
 
 void BowlingGame::frameIncrease()
 {
-    frameCounter_ = frameCounter_ + 1U;
-    rollCounter_ = 0U;
+    Counters_->frameCounter = Counters_->frameCounter + 1U;
+    Counters_->rollCounter = 0U;
 }
 
 void BowlingGame::rollIncrease()
 {
-    rollCounter_ = rollCounter_ + 1U;
+    Counters_->rollCounter = Counters_->rollCounter + 1U;
 }
 
 bool BowlingGame::isGameEnd()
 {
-    if (framesMaxWithoutBonus_ - 1U <= frameCounter_) {
-        if (isStrike(knockedDownPins_[framesMaxWithoutBonus_ - 1U])) {
-            if (framesMaxWithBonus_ - 1U <= frameCounter_) {
+    if (Parameters_->framesMaxWithoutBonus - 1U <= Counters_->frameCounter) {
+        if (isStrike(knockedDownPins_[Parameters_->framesMaxWithoutBonus - 1U])) {
+            if (Parameters_->framesMaxWithBonus - 1U <= Counters_->frameCounter) {
                 return true;
             } else {
                 return false;
             }
-        } else if (isSpare(knockedDownPins_[framesMaxWithoutBonus_ - 1U])) {
-            if (framesMaxWithoutBonus_ - 1U < frameCounter_ && 0U != rollCounter_) {
+        } else if (isSpare(knockedDownPins_[Parameters_->framesMaxWithoutBonus - 1U])) {
+            if (Parameters_->framesMaxWithoutBonus - 1U < Counters_->frameCounter && 0U != Counters_->rollCounter) {
                 return true;
             } else {
                 return false;
             }
-        } else if (1U < rollCounter_) {
+        } else if (1U < Counters_->rollCounter) {
             return true;
         } else {
             return false;
@@ -70,7 +70,7 @@ int BowlingGame::pointsSum()
 
         score = score + firstRoll + secondRoll;
 
-        if (framesMaxWithoutBonus_ > frame) {
+        if (Parameters_->framesMaxWithoutBonus > frame) {
             if (isStrike(*it)) {
                 if (isStrike(*(it + 1))) {
                     score = score + (it + 1)->first + (it + 2)->first;
@@ -90,46 +90,46 @@ int BowlingGame::pointsSum()
 
 void BowlingGame::roll(size_t knockedDownPinsAmount)
 {
-    if (!gameEnd_) {
-        if (pinsMaxInFrame < knockedDownPinsAmount || pinsLeft_ < knockedDownPinsAmount) {
+    if (!Counters_->gameEnd) {
+        if (Parameters_->pinsMaxInFrame < knockedDownPinsAmount || Counters_->pinsLeft < knockedDownPinsAmount) {
             throw PinsKoRangeError { "Pins knocked down out of range!" };
         } else {
             rollIncrease();
-            if (1U == rollCounter_) {
-                knockedDownPinsPerFrame_.first = knockedDownPinsAmount;
-                knockedDownPinsPerFrame_.second = 0U;
-                knockedDownPins_[frameCounter_] = knockedDownPinsPerFrame_;
-            } else if (2U == rollCounter_) {
-                knockedDownPinsPerFrame_.second = knockedDownPinsAmount;
-                knockedDownPins_[frameCounter_] = knockedDownPinsPerFrame_;
+            if (1U == Counters_->rollCounter) {
+                Counters_->knockedDownPinsPerFrame.first = knockedDownPinsAmount;
+                Counters_->knockedDownPinsPerFrame.second = 0U;
+                knockedDownPins_[Counters_->frameCounter] = Counters_->knockedDownPinsPerFrame;
+            } else if (2U == Counters_->rollCounter) {
+                Counters_->knockedDownPinsPerFrame.second = knockedDownPinsAmount;
+                knockedDownPins_[Counters_->frameCounter] = Counters_->knockedDownPinsPerFrame;
             }
-            pinsLeft_ = pinsLeft_ - knockedDownPinsAmount;
+            Counters_->pinsLeft = Counters_->pinsLeft - knockedDownPinsAmount;
         }
-        std::cout << "{" << knockedDownPinsPerFrame_.first << ", " << knockedDownPinsPerFrame_.second << "}\n";
-        totalScore_ = pointsSum();
+        std::cout << "{" << Counters_->knockedDownPinsPerFrame.first << ", " << Counters_->knockedDownPinsPerFrame.second << "}\n";
+        Counters_->totalScore = pointsSum();
     }
 
     if (isGameEnd()) {
-        gameEnd_ = true;
+        Counters_->gameEnd = true;
         std::cout << "End BowlingGame" << std::endl;
     }
 
-    if (0U == pinsLeft_ || rollsInFrameMax_ <= rollCounter_) {
-        pinsLeft_ = pinsMaxInFrame;
+    if (0U == Counters_->pinsLeft || Parameters_->rollsInFrameMax <= Counters_->rollCounter) {
+        Counters_->pinsLeft = Parameters_->pinsMaxInFrame;
         frameIncrease();
     }
 }
 
 int BowlingGame::getScore() const
 {
-    return totalScore_;
+    return Counters_->totalScore;
 }
 
 bool BowlingGame::getGameEnd() const
 {
-    return gameEnd_;
+    return Counters_->gameEnd;
 }
 
 BowlingGame::BowlingGame()
-    : knockedDownPins_(framesMaxWithBonus_, { 0U, 0U }) {};
+    : knockedDownPins_(Parameters_->framesMaxWithBonus, { 0U, 0U }) {};
 BowlingGame::~BowlingGame() = default;
