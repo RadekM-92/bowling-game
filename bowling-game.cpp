@@ -51,7 +51,7 @@ bool BowlingGame::isGameEnd()
             } else {
                 return false;
             }
-        } else if (1U < Counters_->rollCounter) {
+        } else if (Parameters_->framesMaxWithoutBonus <= Counters_->frameCounter) {
             return true;
         } else {
             return false;
@@ -109,14 +109,15 @@ void BowlingGame::roll(size_t knockedDownPinsAmount)
         Counters_->totalScore = pointsSum();
     }
 
-    if (isGameEnd()) {
-        Counters_->gameEnd = true;
-        std::cout << "End BowlingGame" << std::endl;
-    }
-
+    
     if (0U == Counters_->pinsLeft || Parameters_->rollsInFrameMax <= Counters_->rollCounter) {
         Counters_->pinsLeft = Parameters_->pinsMaxInFrame;
         frameIncrease();
+    }
+    
+    if (isGameEnd()) {
+        Counters_->gameEnd = true;
+        std::cout << "End BowlingGame" << std::endl;
     }
 }
 
