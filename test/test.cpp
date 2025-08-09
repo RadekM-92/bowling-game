@@ -117,3 +117,33 @@ TEST(BowlingGame, GameIsOverAfter10StrikesAndTwoRolls) {
     game.roll(2);
     EXPECT_TRUE(game.getGameEnd());
 }
+
+TEST(BowlingGame, PointsSum) {
+    size_t gameSamples = 6;
+    std::vector<BowlingGame> games(gameSamples);
+    std::vector<std::vector<int>> rolls(gameSamples);
+    std::vector<int> ExpectedPoints(gameSamples);
+
+    rolls[0] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+    ExpectedPoints[0] = 300;
+    rolls[1] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    ExpectedPoints[1] = 0;
+    rolls[2] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    ExpectedPoints[2] = 10;
+    rolls[3] = {5, 5, 3, 4};
+    ExpectedPoints[3] = 20;
+    rolls[4] = {3, 4, 6, 4, 6, 2, 5, 3, 8, 2, 10, 4, 5, 3, 2, 4, 5, 9, 1, 4};
+    ExpectedPoints[4] = 115;
+    rolls[5] = {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 5, 5};
+    ExpectedPoints[5] = 160;
+
+    for(auto i=0; i<gameSamples; ++i) {
+        for(const auto & pins : rolls[i]) {
+            games[i].roll(pins);
+        }
+    }
+
+    for(auto i=0; i<gameSamples; ++i) {
+        EXPECT_EQ(games[i].getScore(), ExpectedPoints[i]);
+    }
+}
