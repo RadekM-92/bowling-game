@@ -77,3 +77,43 @@ TEST(BowlingGame, GameIsNotOverAfterSpareInLastFrame) {
 
     EXPECT_FALSE(game.getGameEnd());
 }
+
+TEST(BowlingGame, GameIsOverAfter10StrikesAndStrike) {
+    size_t framesMax = 10;
+    BowlingGame game;
+
+    for(auto frame=0; frame<framesMax; ++frame) {
+        game.roll(10);
+    }
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(10);
+    EXPECT_TRUE(game.getGameEnd());
+}
+
+TEST(BowlingGame, GameIsOverAfter10StrikesAndSpare) {
+    size_t framesMax = 10;
+    BowlingGame game;
+
+    for(auto frame=0; frame<framesMax; ++frame) {
+        game.roll(10);
+    }
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(5);
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(5);
+    EXPECT_TRUE(game.getGameEnd());
+}
+
+TEST(BowlingGame, GameIsOverAfter10StrikesAndTwoRolls) {
+    size_t framesMax = 10;
+    BowlingGame game;
+
+    for(auto frame=0; frame<framesMax; ++frame) {
+        game.roll(10);
+    }
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(2);
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(2);
+    EXPECT_TRUE(game.getGameEnd());
+}
