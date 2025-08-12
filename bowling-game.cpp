@@ -43,14 +43,12 @@ bool BowlingGame::isGameEnd()
 
     if (lastFrameWithoutBonus < Counters_->frameCounter) {
         if (isStrike(knockedDownPins_[lastFrameWithoutBonus])) {
-            if( ((lastFrameWithBonus <= Counters_->frameCounter)
-                    and not isStrike(knockedDownPins_[lastFrameWithoutBonus+1]))
+            if (((lastFrameWithBonus <= Counters_->frameCounter)
+                    and not isStrike(knockedDownPins_[lastFrameWithoutBonus + 1]))
                 or ((lastFrameWithBonus < Counters_->frameCounter)
-                    and (isStrike(knockedDownPins_[lastFrameWithoutBonus+1])))
-                ) {
+                    and (isStrike(knockedDownPins_[lastFrameWithoutBonus + 1])))) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } else if (isSpare(knockedDownPins_[lastFrameWithoutBonus])) {
@@ -117,12 +115,11 @@ void BowlingGame::roll(size_t knockedDownPinsAmount)
         Counters_->totalScore = pointsSum();
     }
 
-    
     if (0U == Counters_->pinsLeft || Parameters_->rollsInFrameMax <= Counters_->rollCounter) {
         Counters_->pinsLeft = Parameters_->pinsMaxInFrame;
         frameIncrease();
     }
-    
+
     if (isGameEnd()) {
         Counters_->gameEnd = true;
         std::cout << "End BowlingGame" << std::endl;
