@@ -78,13 +78,15 @@ TEST(BowlingGame, GameIsNotOverAfterSpareInLastFrame) {
     EXPECT_FALSE(game.getGameEnd());
 }
 
-TEST(BowlingGame, GameIsOverAfter10StrikesAndStrike) {
+TEST(BowlingGame, GameIsOverAfter10StrikesAndStrikeAndStrike) {
     size_t framesMax = 10;
     BowlingGame game;
 
     for(auto frame=0; frame<framesMax; ++frame) {
         game.roll(10);
     }
+    EXPECT_FALSE(game.getGameEnd());
+    game.roll(10);
     EXPECT_FALSE(game.getGameEnd());
     game.roll(10);
     EXPECT_TRUE(game.getGameEnd());
@@ -124,7 +126,7 @@ TEST(BowlingGame, PointsSum) {
     std::vector<std::vector<int>> rolls(gameSamples);
     std::vector<int> ExpectedPoints(gameSamples);
 
-    rolls[0] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+    rolls[0] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
     ExpectedPoints[0] = 300;
     rolls[1] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     ExpectedPoints[1] = 0;
