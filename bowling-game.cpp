@@ -38,20 +38,28 @@ void BowlingGame::rollIncrease()
 
 bool BowlingGame::isGameEnd()
 {
-    if (Parameters_->framesMaxWithoutBonus - 1U <= Counters_->frameCounter) {
-        if (isStrike(knockedDownPins_[Parameters_->framesMaxWithoutBonus - 1U])) {
-            if (Parameters_->framesMaxWithBonus - 1U <= Counters_->frameCounter) {
+    auto lastFrameWithoutBonus = Parameters_->framesMaxWithoutBonus - 1U;
+    auto lastFrameWithBonus = Parameters_->framesMaxWithBonus - 1U;
+
+    if (lastFrameWithoutBonus < Counters_->frameCounter) {
+        if (isStrike(knockedDownPins_[lastFrameWithoutBonus])) {
+            if( ((lastFrameWithBonus <= Counters_->frameCounter)
+                    and not isStrike(knockedDownPins_[lastFrameWithoutBonus+1]))
+                or ((lastFrameWithBonus < Counters_->frameCounter)
+                    and (isStrike(knockedDownPins_[lastFrameWithoutBonus+1])))
+                ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } else if (isSpare(knockedDownPins_[lastFrameWithoutBonus])) {
+            if (lastFrameWithoutBonus < Counters_->frameCounter && 0U != Counters_->rollCounter) {
                 return true;
             } else {
                 return false;
             }
-        } else if (isSpare(knockedDownPins_[Parameters_->framesMaxWithoutBonus - 1U])) {
-            if (Parameters_->framesMaxWithoutBonus - 1U < Counters_->frameCounter && 0U != Counters_->rollCounter) {
-                return true;
-            } else {
-                return false;
-            }
-        } else if (Parameters_->framesMaxWithoutBonus <= Counters_->frameCounter) {
+        } else if (lastFrameWithoutBonus < Counters_->frameCounter) {
             return true;
         } else {
             return false;
