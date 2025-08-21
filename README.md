@@ -1,7 +1,7 @@
 #Bowling game example.
 
 UML diagram:
-https://github.com/RadekM-92/bowling-game/blob/plantUML/UML/bowling-game-UML.svg
+[https://github.com/RadekM-92/bowling-game/blob/plantUML/UML/bowling-game-UML.svg](https://github.com/RadekM-92/bowling-game/blob/master/UML/bowling-game-UML.svg)
 
 ##Build:
 1. Clone repo.
