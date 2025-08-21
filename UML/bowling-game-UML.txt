@@ -1,0 +1,44 @@
+@startuml
+class BowlingGame {
+    -std::unique_ptr<Counters_t> Counters_
+    -std::unique_ptr<Parameters_t> Parameters_
+    -std::vector<std::pair<size_t, size_t>> knockedDownPins_
+    -bool isStrike(const std::pair<size_t, size_t>&)
+    -bool isSpare(const std::pair<size_t, size_t>&)
+    -void frameIncrease()
+    -void rollIncrease()
+    -bool isGameEnd()
+    -int pointsSum()
+    +void roll(size_t)
+    +int getScore() const
+    +bool getGameEnd() const
+    +BowlingGame()
+    +~BowlingGame()
+}
+
+struct PinsKoRangeError { 
+    +PinsKoRangeError(std::string const&)     
+}
+
+struct Counters_t {
+    +size_t rollCounter
+    +size_t frameCounter
+    +size_t totalScore
+    +size_t pinsLeft
+    +std::pair<size_t, size_t> knockedDownPinsPerFrame
+    +bool gameEnd
+}
+
+struct Parameters_t {
+    +size_t pinsMaxInFrame
+    +size_t framesMaxWithoutBonus
+    +size_t framesMaxWithBonus
+    +size_t rollsInFrameMax
+}
+
+
+BowlingGame *-- Parameters_t
+BowlingGame *-- Counters_t
+BowlingGame *-- PinsKoRangeError
+
+@enduml
