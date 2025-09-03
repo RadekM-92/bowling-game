@@ -1,6 +1,5 @@
 #include "bowling-game.hpp"
 #include <cstdlib>
-#include <iostream>
 
 PinsKoRangeError::PinsKoRangeError(std::string const& msg)
     : std::range_error(msg)
@@ -139,3 +138,9 @@ bool BowlingGame::getGameEnd() const
 BowlingGame::BowlingGame()
     : knockedDownPins_(Parameters_->framesMaxWithBonus, { 0U, 0U }) {};
 BowlingGame::~BowlingGame() = default;
+
+std::ostream& operator<<(std::ostream& os, const BowlingGame& game)
+{
+    os << game.getScore() << "\n";
+    return os;
+}

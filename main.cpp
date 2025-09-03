@@ -7,6 +7,8 @@ int main(void)
     BowlingGame MyBowlingGame;
     int PinsKO = 0;
 
+    std::cout << MyBowlingGame;
+
     std::cout << "Bowling Game Start\r\n";
     while (!MyBowlingGame.getGameEnd()) {
         std::cout << "\r\n";

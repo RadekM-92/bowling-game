@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
+#include <iostream>
 #include <vector>
 
 struct PinsKoRangeError : public std::range_error {
@@ -44,3 +45,5 @@ public:
     BowlingGame();
     ~BowlingGame();
 };
+
+std::ostream& operator<<(std::ostream&, const BowlingGame&);
