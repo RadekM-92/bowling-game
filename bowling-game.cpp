@@ -110,7 +110,6 @@ void BowlingGame::roll(size_t knockedDownPinsAmount)
             }
             Counters_->pinsLeft = Counters_->pinsLeft - knockedDownPinsAmount;
         }
-        std::cout << "{" << Counters_->knockedDownPinsPerFrame.first << ", " << Counters_->knockedDownPinsPerFrame.second << "}\n";
         Counters_->totalScore = pointsSum();
     }
 
@@ -146,6 +145,6 @@ std::ostream& operator<<(std::ostream& os, const BowlingGame& game)
         os << "{" << firstRoll << ", " << secondRoll << "}, ";
     }
     os << "\n";
-    
+
     return os;
 }

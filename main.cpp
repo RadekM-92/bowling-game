@@ -7,8 +7,6 @@ int main(void)
     BowlingGame MyBowlingGame;
     int PinsKO = 0;
 
-    std::cout << MyBowlingGame;
-
     std::cout << "Bowling Game Start\r\n";
     while (!MyBowlingGame.getGameEnd()) {
         std::cout << "\r\n";
@@ -19,6 +17,7 @@ int main(void)
         } catch (PinsKoRangeError const& pkre) {
             std::cout << pkre.what() << std::endl;
         }
+        std::cout << MyBowlingGame;
         std::cout << "Score: " << MyBowlingGame.getScore() << "\r\n";
     }
 
