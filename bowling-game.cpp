@@ -141,6 +141,11 @@ BowlingGame::~BowlingGame() = default;
 
 std::ostream& operator<<(std::ostream& os, const BowlingGame& game)
 {
-    os << game.getScore() << "\n";
+    for(auto const & frame : game.knockedDownPins_) {
+        auto const & [firstRoll, secondRoll] = frame;
+        os << "{" << firstRoll << ", " << secondRoll << "}, ";
+    }
+    os << "\n";
+    
     return os;
 }
