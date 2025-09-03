@@ -44,6 +44,6 @@ public:
     bool getGameEnd() const;
     BowlingGame();
     ~BowlingGame();
+    friend std::ostream& operator<<(std::ostream&, const BowlingGame&);
 };
 
-std::ostream& operator<<(std::ostream&, const BowlingGame&);
